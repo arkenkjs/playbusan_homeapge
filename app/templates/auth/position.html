@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!-- <table style="margin: auto; text-align: left; border-bottom: 1px solid #ddd; float:left;">
+    <tr height="120px" style="margin: auto; border-bottom: 0.5px solid #ddd;">
+        <td width="100px"> -->
+{% block app_content %}
+<div class="w3-container" style="text-align: center;">
+    <p>
+        <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-pause"></span>
+                    &nbsp;&nbsp; 가입하기</h3>
+    </p>
+    <div class="w3-pannel">
+        <img src='../static/img/student.jpg' />
+    </div>    
+    
+    <div class="w3-container w3-padding-16">
+        <form action="{{ url_for('auth.authentication') }}" method = 'POST'>
+            <div class="w3-padding-16">
+                <input type='radio' name='auth_type' value='email'> e-mail로 인증
+                <input type='radio' name='auth_type' value='phone'> 휴대폰으로 인증
+            </div>
+            <br>
+            <div class="w3-container">
+                <input type='text' size='20' name='email_or_number' placeholder='e-mail 혹은 휴대폰번호'>
+                <input type='submit' value='인증하기'> 
+            </div>
+        </form>
+    </div>
+</div>
+<hr>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+<div class="w3-container" style="text-align: center;">
+    <p>
+        &nbsp;&nbsp;  로그인!</h3>
+    </p>             
+    <form class="w3-container w3-padding">
+        {{ wtf.quick_form(form) }}
+    </form>
+    <br>
+    <p>
+    회원 가입                
+        <a href="{{ url_for('auth.position') }}">홈페이지 회원가입</a>
+    </p>
+    <p>
+        {{ '비밀번호를 잊었습니까?' }}
+        <a href="{{ url_for('auth.reset_password_request') }}">{{ '비밀번호 초기화' }}</a>
+    </p> 
+</div>
+<hr>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+<div class="w3-container">
+    <div class="w3-padding-16">
+        <p><h3>                    
+            &nbsp;&nbsp; 회원 가입
+        </h3></p>
+    </div>
+    <div class="w3-container">                
+        <span>
+            {{ wtf.quick_form(form) }}
+        </span>               
+    </div>        
+</div>
+<hr>ck %}

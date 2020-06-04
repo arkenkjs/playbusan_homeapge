@@ -1,0 +1,11 @@
+Dear,
+
+To join us click on the following link:
+
+{{ url_for('auth.sign_up', positions=positions, token=token, _external=True) }}
+
+If you have not requested a sign-up simply ignore this message.
+
+Sincerely,
+
+Kim

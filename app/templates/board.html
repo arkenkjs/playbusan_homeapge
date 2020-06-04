@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+{% from "_sub_nav.html" import sub_nav %}
+
+{% block app_content %}
+<div class="w3-container w3-padding-16">
+    <div class="w3-container">
+        <p>
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-th-list"></span>
+                &nbsp;&nbsp; {{ title }}    
+            </h3>
+        </p>
+    </div>
+    <div class="w3-container w3-padding-16">
+        <table>
+            <tbody>
+                {% for source in posts %}
+                    {% include 'elementary/_article.html' %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if g.search_form %}
+        <form class="w3-container" method="get" action="{{ url_for('main.search', search_board='board') }}">
+            <div class="form-group">
+                {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+            </div>
+        </form>
+        {% endif %}
+        <div style="float:right">            
+                {{ wtf.quick_form(form) }}
+        </div>
+    </div>       
+</div>
+<hr>
+{% endblock %}

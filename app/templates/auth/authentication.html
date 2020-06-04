@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<div class="w3-container" style="text-align: center;">    
+    <h3>
+        &nbsp;&nbsp; 인증번호를 입력해주세요.
+    </h3>
+    <div class="w3-container">                
+        {% if email %}
+            <p>가입을 계속하기 위해 이메일을 확인해주세요.</p><br>	
+        {% endif %}
+        {% if phone %}
+        
+        <form action="{{ url_for('auth.authentication_sms', positions=positions, phone_number=phone_number) }}" method = 'POST'>
+            <input type='text' name='input_auth' size=20> 
+            <input type='submit' value='인증하기'>
+        </form>
+        <br>
+        {% endif %}       
+    </div>
+</div>
+<hr>
+{% endblock %}

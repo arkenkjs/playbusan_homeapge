@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div class="w3-container">
+    <div class="w3-container w3-padding-16">        
+        <p>
+            <h3>            
+            &nbsp;&nbsp; 사용자: {{ user.username }}
+            </h3>
+        </p>
+    <div>
+    <table class="w3-table w3-hoverable">
+        <tr>
+            <td width="128px"><img src="{{ user.avatar(128) }}"></td>
+            <td>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}
+                <p> 마지막 접속 : {{ moment(user.last_seen).format('LLL') }}</p>
+                {% endif %}
+                {# <p> {{user.followers.count()}}명의 followers, 
+                {{ user.followed.count() }}명을 following</p> #}
+                {% if user == current_user %}
+                <p>
+                    <a href="{{ url_for('main.ProfileUpdate') }}">
+                    프로필 수정
+                    </a>
+                </p>
+
+                {% endif %}
+                {% if user != current_user %}
+                <p>
+                    <a href="{{ url_for('main.send_message',
+                                        recipient=user.username) }}">
+                        쪽지를 보냈습니다.
+                    </a>
+                </p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="w3-container">
+    <div class="w3-containery">        
+        <p>
+            <h3>
+                &nbsp;&nbsp; {{ user.username }}님이 작성하신 게시물
+            </h3>
+        </p>
+    </div>
+    <div class="w3-container">
+        <table class="w3-table">
+            <thead>
+                <tr>
+                <td rowspan="2">id</td>                    
+                <td>제목 [댓글수]</td>    
+                <td rowspan="2">좋아요</td>                    
+                <td rowspan="2">조회수</td>
+                <td rowspan="2"><!-- '다운로드'  --></td>
+                </tr>
+                <tr>
+                <td>작성자 | 작성 시간</td>
+                </tr>
+            </thead>
+                <!-- 공지사항 예제들-->
+            <tbody>
+                {% for source in posts %}
+                    {% include '_post.html' %}
+                {% endfor %}    
+            </tbody>
+        </table>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li class="previous{% if not prev_url %} disabled{% endif %}">
+                    <a href="{{ prev_url or '#' }}">
+                        <span aria-hidden="true">&larr;</span>다음 게시물
+                    </a>
+                </li>
+                <li class="next{% if not next_url %} disabled{% endif %}">
+                    <a href="{{ next_url or '#' }}">
+                        이전 게시물 <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ul>,
+        </nav>
+    </div>
+</div>
+
+<div class="w3-container">
+    <div class="w3-container">
+        <p>
+            <h3>
+                &nbsp;&nbsp; {{ user.username }}님이 작성하신 
+            </h3>
+        </p>
+    </div>
+    <div class="w3-container">
+        <table class="w3-table">
+            <thead>                    
+            </thead>
+                <!-- 공지사항 예제들-->
+            <tbody>
+                {% for post in comments %}
+                    {% include '_comment.html' %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li class="previous{% if not prev_url_commnets %} disabled{% endif %}">
+                    <a href="{{ prev_url_commnets or '#' }}">
+                        <span aria-hidden="true">&larr;</span> 다음 댓글들
+                    </a>
+                </li>
+                <li class="next{% if not next_url_comments %} disabled{% endif %}">
+                    <a href="{{ next_url_comments or '#' }}">
+                        이전 댓글들 <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<hr>
+{% endblock %}

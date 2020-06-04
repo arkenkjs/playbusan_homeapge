@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div class="w3-container" style="width: 80%;">
+    <p><h3>
+        &nbsp;&nbsp; {{current_user.username }}님의 쪽지함
+    </h3></p>    
+    <div class="w3-container">
+        <table>
+            <tbody>
+                {% for post in messages %}
+                    {% include '_comment.html' %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li class="previous{% if not prev_url %} disabled{% endif %}">
+                    <a href="{{ prev_url or '#' }}">
+                        <span aria-hidden="true">&larr;</span>  다음 쪽지들 
+                    </a>
+                </li>
+                <li class="next{% if not next_url %} disabled{% endif %}">
+                    <a href="{{ next_url or '#' }}">
+                        이전 쪽지들  <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<hr>
+{% endblock %}

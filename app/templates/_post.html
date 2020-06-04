@@ -1,0 +1,20 @@
+<table class="w3-table w3-hoverable">
+  <tr>
+    <td rowspan="2">{{ source.id }}</td>
+	{% if source.semesters %}
+    <td rowspan="2">{{ source.semesters[0].semester }}</td>
+    <td rowspan="2">{{source.grades[0].grade_description}}</td>
+    <td><a href="{{url_for('elementary.content', postid=source.id, type=type)}}" >{{ source.title }} [{{ source.comment_counter() }}]</a> </td>
+    <td rowspan="2">좋아요 : {{source.like_counter()}}</td>
+	{% else %}
+    <td><a href="{{url_for('elementary.content', postid=source.id, type=type)}}" >{{ source.title }} [{{ source.comment_counter() }}]</a></td>    
+    <td rowspan="2">좋아요 : {{source.like_counter()}}</td>
+	{% endif %}
+    <td rowspan="2">조회수 : {{source.view_counter()}}</td>
+    <td rowspan="2"><!-- '다운로드'  --></td>
+  </tr>
+  <tr>
+    <td>
+      <p style="font-style: oblique;">{{ source.author.username }} | {{ source.timestamp }}</p></td>
+  </tr>
+</table>
