@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+{% from "_sub_nav.html" import sub_nav %}
+
+{% block app_content %}
+<div class="container" style="width: 90%;">
+    <div class="panel panel-primary">
+        <div class="panel-heading" >
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-book"></span>
+                &nbsp;&nbsp; {{ grade_description }} {{ type }}
+            {% if form_filter %}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <form method="POST">
+                            <span class="form-inline">
+                                {{ wtf.quick_form(form_filter)}}                        
+                            </span>
+                        </form>
+                    </div>                
+                </div>
+            {% endif %}
+            </h3>
+        </div>
+        <div class="panel-body" style="padding-top: 0;">
+            <table>
+                <tbody>
+                    {% for source in sources %}
+                        {% include 'elementary/_post.html' %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li class="previous{% if not prev_url %} disabled{% endif %}">
+                        <a href="{{ prev_url or '#' }}">
+                            <span aria-hidden="true">&larr;</span> 다음
+                        </a>
+                    </li>
+                    <li class="next{% if not next_url %} disabled{% endif %}">
+                        <a href="{{ next_url or '#' }}">
+                            이전 <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="pannel-footer">
+                <blockquote>
+                <p> Without mathematics, there's nothing you can do. Everything around you is mathematics. Everything around you is numbers.</p>
+                </blockquote>                       
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+            {#
+            <div style="float:left">
+                <form action = "/write" method = "POST">
+                    <p><input type = "submit" value = "write" /></p>
+                </form>
+            </div>
+            #}
+{% endblock %}

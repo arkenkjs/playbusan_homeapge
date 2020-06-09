@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+{% from "_sub_nav.html" import sub_nav %}
+
+
+{% block app_content %}
+<div class="container" style="width: 80%;">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-paperclip"></span>
+                &nbsp;&nbsp; FAQ
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="container">            
+                <h5>사이트 이용 중에 회원님들께서 자주 하시는 질문을 주제별로 분류하였습니다. <br>
+                원하는 답변이 없다면 1:1문의 또는 전화상담을 이용하셔서 궁금증을 해결하세요.
+                </h5>
+            </div>
+            <br>
+
+            <div class="container">
+                <div class="input-group mb-6">
+                    <div class="input-group-prepend">
+                    <form method="POST">
+                        <span class="form-inline">
+                            {{ wtf.quick_form(form) }}
+                        </span>
+                    </form>
+                </div>    
+            </div>
+            <hr>
+            <div class="container">
+                <div id="pagination-links">
+                    {% for source in questions %}
+                        {% include '_faq.html' %}
+                    {% endfor %}
+                </div>   
+            </div>
+            <nav aria-label="..." style="width:80%;">
+                <ul class="pager">
+                    <li class="previous{% if not prev_url %} disabled{% endif %}">
+                        <a href="{{ prev_url or '#' }}">
+                            <span aria-hidden="true">&larr;</span> 다음
+                        </a>
+                    </li>
+                    <li class="next{% if not next_url %} disabled{% endif %}">
+                        <a href="{{ next_url or '#' }}">
+                            이전 <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+            <div class="pannel-footer">
+                <blockquote>
+                <p> Without mathematics, there's nothing you can do. Everything around you is mathematics. Everything around you is numbers.</p>
+                </blockquote>                       
+            </div>
+        
+    </div>
+</div>
+
+{% endblock %}
+{% block style %}
+<style>
+    .menu-faq .nav .nav-item{        
+            list-style-type:none; float: left; display: inline !important;        
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+<div class="container">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-new-window"></span>
+                    &nbsp;&nbsp; 매쓰모카에 등록된 이메일 주소를 입력하세요.
+                </h3>
+            </div>
+            <div class="panel-body">                
+		        <span>
+		            {{ wtf.quick_form(form) }}
+		        </span>
+                <br>                
+                <div class="pannel-footer">
+                    <blockquote>
+                    <p> Mathematics is a game played according to certain simple rules with meaningless marks on paper.</p>
+                    </blockquote>                       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endblock %}

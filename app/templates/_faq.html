@@ -1,0 +1,30 @@
+<table style="margin: auto; text-align: left; border-bottom: 1px solid #ddd; float:left;">
+	<tr height="50">
+		<td width="150">{{ source.category }}
+		</td>	
+		<td width="600">
+			<a data-target="#modal{{source.id}}" data-toggle="modal" >
+			<p class="text-left">
+			{{ source.title }}</p></a>
+		</td>
+	</tr>
+</table>
+
+<div class="row">
+	<div class="modal fade bs-example-modal-lg" id="modal{{source.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					제목 : {{source.title}}
+					<button class="close" data-dismiss="modal">&times;</button>							
+				</div>
+				<div class="modal-body" style="text-align:center;">
+					<pre style="display:block; word-wrap: break-word; white-space: pre-line; margin: 0em 0;">
+					{{source.body}}
+					</pre>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

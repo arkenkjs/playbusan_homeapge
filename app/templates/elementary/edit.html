@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<div class="container">
+	<div class="col-md-8">
+	    <div class="panel panel-primary">
+	        <div class="panel-heading">
+	            <h3 class="panel-title">
+	                <span class="glyphicon glyphicon-pencil"></span>
+	                &nbsp;&nbsp; [ {{ title }}] 글 쓰기
+	            </h3>
+	        </div>
+	        <div class="panel-body">
+	        	{{ wtf.quick_form(form) }}
+	        	<br> 
+	            <div class="pannel-footer">
+	                <blockquote>
+	                <p> The beauty of mathematics only shows itself to more patient followers.</p>
+	                </blockquote>                       
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+<hr>
+{% endblock %}

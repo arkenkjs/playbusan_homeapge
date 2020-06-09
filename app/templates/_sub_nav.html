@@ -1,0 +1,48 @@
+{% macro sub_nav(endpoint, grade, name) %}
+    <ul class="nav navbar-nav navbar-doublerow navbar-down">
+        <a href="{{ url_for(endpoint, grade=grade, type='None') }}" class="dropdown-toggle" data-toggle='dropdown' role='button' aria-haspopup="true" aria-expanded="false">
+         {{ name }} <span class="caret"></span></a>
+        <ul class="dropdown-menu dropdown:hover">
+            <li><a href="{{ url_for(endpoint, grade=grade, type='concept') }}">{{ '개념완성' }}</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for(endpoint, grade=grade, type='chapter') }}">{{ '단원적중' }}</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for(endpoint, grade=grade, type='frequency') }}">{{ '자주 나오는 문제' }}</a></li>        
+            <li><a href="{{ url_for(endpoint, grade=grade, type='incorrect') }}">{{ '자주 틀리는 문제' }}</a></li>
+            <li role="separator" class="divider"></li>                    
+            <li><a href="{{ url_for(endpoint, grade=grade, type='high_level') }}">{{ '고난이도' }}</a></li>
+        </ul>
+    </ul>
+{#{% endif %}#}
+{% endmacro %}
+
+{% macro sub_nav_dropdown(endpoint, grade, name) %}
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for(endpoint, grade=grade, type = 'None') }}"> {{ name }}
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="{{ url_for(endpoint, grade=grade, type='concept') }}"> 개념완성 </a></li>
+        <li><a href="{{ url_for(endpoint, grade=grade, type='chapter') }}"> 단원적중 </a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{{ url_for(endpoint, grade=grade, type='frequency') }}"> 자주 나오는 문제 </a></li>
+        <li><a href="{{ url_for(endpoint, grade=grade, type='incorrect') }}"> 자주 틀리는 문제 </a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{{ url_for(endpoint, grade=grade, type='high_level') }}"> 고난이도 </a></li>
+    </ul>
+</li>
+{% endmacro %}
+
+
+{% macro sub_nav_board(endpoint, grade) %}
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for(endpoint, grade=grade, type = 'None') }}"> 커뮤니티
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="{{ url_for(endpoint,  type='qna') }}">{{ '질문게시판' }}</a></li>            
+        <li role="separator" class="divider"></li>
+        <li><a href="{{ url_for(endpoint,  type='communication') }}">{{ '자유게시판' }}</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{{ url_for(endpoint,  type='gradeup') }}">{{ '성적이 올랐어요' }}</a></li>
+    </ul>
+</li>
+{% endmacro %}

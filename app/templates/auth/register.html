@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+<div class="container">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-play"></span>
+                    &nbsp;&nbsp; 회원가입
+                </h3>
+            </div>
+            <div class="panel-body">
+    			<div>
+    				{{ wtf.quick_form(form) }}
+    			</div>
+    			<br>
+                <div class="pannel-footer">
+                    <blockquote>
+                    	<p> Mathematics is not about numbers, equations, computations, or algorithms: it is about UNDERSTANDING.</p>
+                    </blockquote>                       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endblock %}

@@ -1,0 +1,122 @@
+2019-10-25 11:31:54,811 ERROR: Exception on /elementary/list/concept/third [GET] [in C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "d:\Mathmocha\workplace\mathmocha\app\elementary\routes.py", line 105, in list
+    next_url=next_url, prev_url=prev_url)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\elementary\list.html", line 4, in top-level template code
+    {% from "_sub_nav.html" import sub_nav %}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\base.html", line 2, in top-level template code
+    {% from "_sub_nav.html" import sub_nav, sub_nav_board %}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block "doc"
+    {%- block html %}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block "html"
+    {% block body -%}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block "body"
+    {% block content -%}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\base.html", line 155, in block "content"
+    {% block app_content %}{% endblock %}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\elementary\list.html", line 35, in block "app_content"
+    {% include 'elementary/_post.html' %}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\elementary\_post.html", line 11, in top-level template code
+    <td rowspan="2">¡¡æ∆ø‰ : {{source.like_counter()}}</td>
+  File "d:\Mathmocha\workplace\mathmocha\app\models.py", line 561, in like_counter
+    SourceLike.school == self.grades[0].school)).count()
+IndexError: list index out of range
+2019-10-25 11:32:37,429 ERROR: Exception on /elementary/community/qna [GET] [in C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "d:\Mathmocha\workplace\mathmocha\app\elementary\routes.py", line 130, in community
+    posts=posts.paginate(page, current_app['POSTS_PER_PAGE'], False)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\werkzeug\local.py", line 378, in <lambda>
+    __getitem__ = lambda x, i: x._get_current_object()[i]
+TypeError: 'Flask' object is not subscriptable
+2019-10-25 11:34:20,203 INFO: Mathmocha startup [in d:\Mathmocha\workplace\mathmocha\app\__init__.py:80]
+2019-10-25 11:38:44,419 INFO: Mathmocha startup [in d:\Mathmocha\workplace\mathmocha\app\__init__.py:80]
+2019-10-25 11:39:03,377 ERROR: Exception on /elementary/list/concept/third [GET] [in C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "d:\Mathmocha\workplace\mathmocha\app\elementary\routes.py", line 105, in list
+    next_url=next_url, prev_url=prev_url)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\elementary\list.html", line 4, in top-level template code
+    {% from "_sub_nav.html" import sub_nav %}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\base.html", line 2, in top-level template code
+    {% from "_sub_nav.html" import sub_nav, sub_nav_board %}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 4, in block "doc"
+    {%- block html %}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 20, in block "html"
+    {% block body -%}
+  File "C:\Users\USER\.conda\envs\flask\lib\site-packages\flask_bootstrap\templates\bootstrap\base.html", line 23, in block "body"
+    {% block content -%}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\base.html", line 155, in block "content"
+    {% block app_content %}{% endblock %}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\elementary\list.html", line 35, in block "app_content"
+    {% include 'elementary/_post.html' %}
+  File "d:\Mathmocha\workplace\mathmocha\app\templates\elementary\_post.html", line 10, in top-level template code
+    <td><a href="{{url_for('elementary.content', postid=source.id, type=type)}}" >{{ source.title }} [{{ source.comment_counter() }}]</a></td>
+  File "d:\Mathmocha\workplace\mathmocha\app\models.py", line 565, in comment_counter
+    and_(Comment_Problem.board_id == self.id, Comment_Problem.school == self.grades[0].school)
+IndexError: list index out of range
+2019-10-25 11:41:37,854 INFO: Mathmocha startup [in d:\Mathmocha\workplace\mathmocha\app\__init__.py:80]
+2019-10-25 11:42:01,997 INFO: Mathmocha startup [in d:\Mathmocha\workplace\mathmocha\app\__init__.py:80]
+2019-10-25 11:56:20,309 INFO: Mathmocha startup [in D:\Mathmocha\workplace\mathmocha\app\__init__.py:80]

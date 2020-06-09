@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+<div class="container">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    &nbsp;&nbsp; 매쓰모카 로그인!
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="">
+                    {{ wtf.quick_form(form) }}
+                </div>
+                <br>
+                <p>
+                회원 가입                
+                    <a href="{{ url_for('auth.position') }}">매쓰모카 회원가입</a>
+                </p>
+                <p>
+                    {{ '비밀번호를 잊었습니까?' }}
+                    <a href="{{ url_for('auth.reset_password_request') }}">{{ '비밀번호 초기화' }}</a>
+                </p>
+                <div class="pannel-footer">
+                    <blockquote>
+                    <p> The beauty of mathematics only shows itself to more patient followers.</p>
+                    </blockquote>                       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endblock %}

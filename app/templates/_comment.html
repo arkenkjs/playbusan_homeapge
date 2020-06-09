@@ -1,0 +1,43 @@
+<table class="table table-hover">
+	<tr>
+		<td width="70px">
+			<a href="{{ url_for('main.user', username=post.author.username) }}">
+				<img src="{{ post.author.avatar(70) }}" />
+			</a>
+		</td>
+		<td>
+		{#	
+			{% set user_link %}
+				<span class="user_popup">
+					<a href="{{ url_for('main.user', username=post.author.username) }}">
+						{{ post.author.username }}
+					</a>
+				</span>
+			{% endset %} 
+		#}
+			<p style="font-style: oblique;">
+			{{ moment(post.timestamp).fromNow() }}  {{ current_user.username }} 님이 작성</p>
+			<br>
+			<span id="post{{ post.id }}">
+			{% if post.title %}
+			<a href="/board/{{ post.id }}" >{{ post.title }}</a> <!--<a href="{{ url_for('main.board', bdid = post.id )}}">{{ post.title }}</a>-->
+			{% else %}
+				<pre style="display:block; word-wrap: break-word; white-space: pre-line; margin: 0em 0;">
+				{{ post.body }}
+				</pre>
+			{% endif %}</span>		
+
+
+			{% if post.language and post.language != g.locale %}
+			<br><br>
+			<span id="translation{{ post.id }}">
+				<a href="javascript:translate(
+				'#post{{ post.id }}',
+				'#translation{{ post.id }}',
+				'{{ post.language }}',
+				'{{ g.locale }}');">{{ _('Translate') }}</a>
+			</span>
+			{% endif %}
+		</td>
+	</tr>	
+</table>

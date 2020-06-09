@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!-- <table style="margin: auto; text-align: left; border-bottom: 1px solid #ddd; float:left;">
+    <tr height="120px" style="margin: auto; border-bottom: 0.5px solid #ddd;">
+        <td width="100px"> -->
+{% block app_content %}
+<div class="container">
+    <div class="col-md-10">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-pause"></span>
+                    &nbsp;&nbsp; 가입하기
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table style="margin: auto; text-align: center; border-bottom: 1px solid #ddd;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td>
+                            <img src='../static/img/teacher.jpg' />
+                            </td>
+                            <td>
+                            <img src='../static/img/student.jpg' />
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <form action="{{ url_for('auth.authentication') }}" method = 'POST'>
+                            <tr height="50px" style="margin: auto; border-bottom: 0.5px solid #ddd;">
+                                <td>
+                                    <input type='radio' name='register_type' value='teacher'> 선생님 회원 가입
+                                </td>
+                                <td>
+                                    <input type='radio' name='register_type' value='student'> 학생 회원 가입
+                                </td>
+                            </tr>
+                            <tr height="50px" style="margin: auto; border-bottom: 0.5px solid #ddd;">
+                                <td>
+                                    <input type='radio' name='auth_type' value='email'> e-mail로 인증
+                                </td>
+                                <td>
+                                    <input type='radio' name='auth_type' value='phone'> 휴대폰으로 인증
+                                </td>
+                            </tr>                                                    
+                    </tbody>
+                </table>
+                <br>
+                    <div style="text-align: center; margin: auto; ">
+                        <input type='text' size='20' name='email_or_number' placeholder='e-mail 혹은 휴대폰번호'>
+                        <input type='submit' value='인증하기'> 
+                    </div>
+                </form>
+                <br>
+ 
+                            <div style='text-align:center'>
+                            <a href="{{ url_for('auth.register_test', positions='teacher')}}"> (임시)선생님 회원 가입하기 </a>
+                            </div>
+                        
+                            <div style='text-align:center'>
+                            <a href="{{ url_for('auth.register_test', positions='student')}}"> (임시)학생 회원 가입하기 </a>
+                            </div>
+                <br>
+                <div class="pannel-footer">
+                    <blockquote>
+                        <p> To solve math problems, you need to know the basic mathematics before you can start applying it.</p>
+                    </blockquote>                       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endblock %}

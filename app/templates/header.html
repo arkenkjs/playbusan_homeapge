@@ -1,0 +1,14 @@
+<div id="header">
+    {% block header %}
+    <div id='logo' style="float:left">
+    <img src="../static/img/logo_test.png" width="160" height="80" alt="logo" />
+    <div id='hello' style='float:right'>
+    {% if current_user.is_anonymous %}
+        'Hello, World!'
+        {# {{ ('%(username)님!', username=current_user.username) }}  #}
+    {% else %}
+        {{ wtf.quick_form(form) }}
+    {% endif %}
+    </div>
+    {% endblock %}
+</div>

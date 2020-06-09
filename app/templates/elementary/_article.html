@@ -1,0 +1,23 @@
+<table style="margin: auto; text-align: left; border-bottom: 1px solid #ddd; float:left;">
+  <tr>
+    <td class='col-md-1' rowspan="2" style="text-align: center;">{{ source.id }}</td>
+    <td class='col-md-7'><a href="{{url_for('elementary.content', postid=source.id, type=type)}}" >{{ source.title }} [{{ source.comment_counter() }}]</a></td>    
+    <td class='col-md-1' rowspan="2"><i class="fas fa-heart"></i> {{source.like_counter()}}</td>
+    <td class='col-md-1' rowspan="2"><i class="fas fa-eye"></i>
+    {{source.view_counter()}}</td>
+    <td class='col-md-1' rowspan="2">
+    <i class="far fa-file-image" style="font-size: 2em"></i> 
+    <i class="far fa-file-pdf" style="font-size: 2em"></i>
+  </td>
+  </tr>
+  <tr>
+    <td class='username'>
+      <p style="font-style: oblique;">
+      {{ moment(source.timestamp).fromNow() }} {{ source.author.username }}님께서 작성 </p>
+    </td>
+  </tr>
+</table>
+
+{% block style%}
+
+{% endblock %}

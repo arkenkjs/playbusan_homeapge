@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% from "_sub_nav.html" import sub_nav, sub_nav_board, sub_nav_dropdown %}
+
+{% block head %}
+    {{super()}}
+    {{fixes.ie8()}}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+        MathMocha
+        {% endblock %}
+    </title>
+
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+{% endblock %}
+
+<nav class="navbar navbar-inverse navbar-expand-xl navbar-dark">
+{% block navbar %}
+    <div class="container" style="margin:auto; padding-left: 2%">
+        <div class="navbar-header d-flex col" >
+            <div class="row" style="margin:auto;">
+                <a class="navbar-brand" href="{{ url_for('main.index') }}"><b>Math</b>Mocha<i class="fa fa-coffee"></i></a>
+                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle navbar-toggler ml-auto">
+                <span class="navbar-toggler-icon">
+                <span class="icon-bar"></span>
+                <i class="fa fa-bars" style="font-size: 1.5em;"></i>
+                </span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            </div>
+        </div>
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">        
+            {% if level=='elementary' %}
+            <ul class="nav navbar-nav navbar-doublerow navbar-down">
+                {{ sub_nav_dropdown(endpoint='elementary.list', grade='third', name='3학년') }}
+                {{ sub_nav_dropdown(endpoint='elementary.list', grade='fourth', name='4학년') }}
+                {{ sub_nav_dropdown(endpoint='elementary.list', grade='fifth', name='5학년') }}
+                {{ sub_nav_dropdown(endpoint='elementary.list', grade='sixth', name='6학년') }}
+                {{ sub_nav_board(endpoint='elementary.community')}}
+            <!-- </ul> -->
+            {% else %}
+            <ul class="nav navbar-nav navbar-center ml-auto">
+                <li class="nav-item"><a href="{{ url_for('elementary.index') }}" class="nav-link"><i class="fa fa-child"></i><span>초등</span></a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-chalkboard"></i><span>중등</span></a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-school"></i><span>고등</span></a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-user-graduate"></i><span>선생님</span></a></li>
+                <!-- <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-handshake"></i><span>커뮤니티</span></a></li> -->
+            <!-- </ul> -->
+            {% endif %}
+
+            <!-- <ul class="nav navbar-nav navbar-right ml-auto"> -->
+                {% if current_user.is_authenticated %}
+                <li class="nav-item"><a href="{{ url_for('main.messages') }}" class="nav-link"><i class="fa fa-envelope"></i>
+                    <span>메세지
+                    {% set new_messages = current_user.new_messages() %}
+                        <span id="message_count" class="badge"
+                            style="visibility: {% if new_messages %}
+                                                    visible
+                                                {% else %}
+                                                    hidden
+                                                {% endif %};">New!</span>
+                        </span></a>
+                </li>
+                <li class="nav-item"><a href="{{ url_for('main.faq', category='all') }}" class="nav-link"><i class="fa fa-bell"></i><span>고객센터</span></a></li>
+                <li class="nav-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle user-action">
+                        <img src="{{ current_user.avatar(35) }}" class="avatar" alt="Avatar"> 
+                        {{ current_user.username }}
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('main.user', username=current_user.username) }}" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a></li>
+                        <li class="divider dropdown-divider"></li>
+                        <li><a href="{{ url_for('auth.logout') }}" class="dropdown-item"><i class="material-icons">&#xE8AC;</i>로그아웃</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item"><a href="{{ url_for('auth.login') }}" class="nav-link"><i class="fa fa-sign-in-alt"></i><span>로그인</span></a></li>
+                <li class="nav-item"><a href="{{ url_for('auth.position') }}" class="nav-link"><i class="fa fa-mug-hot"></i><span>회원가입</span></a></li>
+                <li class="nav-item"><a href="{{ url_for('main.faq', category='all') }}" class="nav-link"><i class="fa fa-bell"></i><span>고객센터</span></a></li>            
+                {% endif %}
+                </ul>
+        </div>
+        <div class="container" style="display: inline-block;">
+            {% if current_user.is_authenticated %}
+            <div class="row" style="text-align: right;">
+                <form class="navbar-form form-inline">
+                    <div class="input-group search-box">
+                        <input type="text" id="search" class="form-control" size="20" placeholder="Search here...">
+                        <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+                    </div>
+                </form>
+
+                {% else %}
+
+            {#자바스크립트 이용해 빈칸 입력 못하게 체크 규칙 만들어야 됨 #}
+            <div class="row" style="text-align: center;">
+                <form action=" {{ url_for('auth.login', next=url_for('elementary.index')) }} " method="POST" class="navbar-form navbar-form form-inline" role="loginform">
+                    <span class="form-inline">
+                        <input type="text" name="username" class="form-control"  id="username" size='10' placeholder="아이디">
+                        <input type="text" name="password" class="form-control"  id="password" size='10' placeholder="비밀번호">
+                        <input type="checkbox" id="remember_me"> 아이디 기억하기
+                        <button type="submit" class="btn btn-default navbar-btn" onclick="null_check()">로그인
+                        </button>
+                        <!-- <a href="{{ url_for('auth.reset_password_request') }}">비밀번호초기화</a></li> -->
+                    </span>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<hr>
+{% endblock %}
+</nav>
+
+{% block content %}    
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+        {% endwith %}       
+    </div>
+
+    {% block app_content %}{% endblock %}
+    <footer>
+    {% block footer %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 form-inline" style="text-align: center;">
+                <p>
+                    <a class="navbar-brand" href="{{ url_for('main.index') }}" style="width: 92px; height:92px;"><b>Math</b>Mocha<i class="fa fa-coffee" style="width: 92px; height:92px;"></i></a>
+                </p>
+            </div>
+            <div class="col-md-9" style="text-align:left;">
+                <h5> Copyright©2019 MathMocha Company | 전화 : 051-731-2990</h5>
+                <h5> 부산시 해운대구 WBC 더 팰리스 | SNS : LINK</h5>
+            </div>        
+        </div>
+    </div>
+    {% endblock %}
+    </footer>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.include_jquery() }}
+{{ moment.locale('ko')}}
+{{ moment.lang(g.locale) }}
+
+<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://kit.fontawesome.com/33b0351c6e.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{#<link rel="stylesheet" href="{{ url_for('static', filename='css/doublenav.css') }}">#}
+<script src="https://kit.fontawesome.com/yourcode.js"></script>
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+<script src="{{url_for('static', filename='js/html5shiv.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/respond.min.js')}}"></script>
+<script>
+    function translate(sourceElem, destElem, sourceLang, destLang) {
+        $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+        $.post('/translate', {
+            text: $(sourceElem).text(),
+            source_language: sourceLang,
+            dest_language: destLang
+        }).done(function(response) {
+            $(destElem).text(response['text'])
+        }).fail(function() {
+            $(destElem).text("{{ 'Error: Could not contact server.' }}");
+        });
+    }
+    $(function () {
+        var timer = null;
+        var xhr = null;
+        $('.user_popup').hover(
+            function(event) {
+                // mouse in event handler
+                var elem = $(event.currentTarget);
+                timer = setTimeout(function() {
+                    timer = null;
+                    xhr = $.ajax(
+                        '/user/' + elem.first().text().trim() + '/popup').done(
+                            function(data) {
+                                xhr = null;
+                                elem.popover({
+                                    trigger: 'manual',
+                                    html: true,
+                                    animation: false,
+                                    container: elem,
+                                    content: data
+                                }).popover('show');
+                                flask_moment_render_all();
+                            }
+                        );
+                }, 1000);
+            },
+            function(event) {
+                // mouse out event handler
+                var elem = $(event.currentTarget);
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                else if (xhr) {
+                    xhr.abort();
+                    xhr = null;
+                }
+                else {
+                    elem.popover('destroy');
+                }
+            }
+        );
+    });
+    function set_message_count(n) {
+        $('#message_count').text(n);
+        $('#message_count').css('visibility', n ? 'visible' : 'hidden');
+    }
+    function set_task_progress(task_id, progress) {
+        $('#' + task_id + '-progress').text(progress);
+    } 
+    {# Notification 기능 당장 log 분석에 방해되니 나중에 active 시키자.
+    {% if current_user.is_authenticated %}
+    $(function() {
+        var since = 0;
+        setInterval(function() {
+            $.ajax('{{ url_for('main.notifications') }}?since=' + since).done(
+                function(notifications) {
+                    for (var i = 0; i < notifications.length; i++) {
+                        switch (notifications[i].name) {
+                            case 'unread_message_count':
+                                set_message_count(notifications[i].data);
+                                break;
+                            case 'task_progress':
+                                set_task_progress(notifications[i].data.task_id,
+                                    notifications[i].data.progress);
+                                break;
+                        }
+                        since = notifications[i].timestamp;
+                    }
+                }
+            );
+        }, 10000);
+    });
+
+
+
+    {% endif %} #}
+</script>
+{% endblock %}
+
+{% block style %}
+<style type="text/css">
+    body{
+        background: #eeeeee;
+        font-family: 'Varela Round', sans-serif;
+    }
+
+    .row1{
+        padding-top: 10px;
+        padding-right: 50px;
+    }
+
+    .row2 {
+        padding-bottom: 20px;
+        display: inline-block;
+
+    }
+
+    .row-center{
+        display: 
+    }
+    .form-inline {
+        display: inline-block;
+    }
+    .navbar-header.col {
+        padding: 0 !important;
+    }   
+    .navbar {
+        color: #fff;
+        background: #926dde;
+        padding: 5px 16px;
+        border-radius: 0;
+        border: none;
+        box-shadow: 0 0 4px rgba(0,0,0,.1);
+    }
+    .navbar img {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+    }
+    .navbar .navbar-brand {
+        color: #efe5ff;
+        padding-left: 0;
+        padding-right: 50px;
+        font-size: 24px;
+    }
+    .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+        color: #fff;
+    }
+    .navbar .navbar-brand i {
+        font-size: 25px;
+        margin-right: 5px;
+    }
+    .search-box {
+        position: relative;
+    }   
+    .search-box input {
+        padding-right: 35px;
+        min-height: 38px;
+        border: none;
+        background: #faf7fd;
+        border-radius: 3px !important;
+    }
+    .search-box input:focus {       
+        background: #fff;
+        box-shadow: none;
+    }
+    .search-box .input-group-addon {
+        min-width: 35px;
+        border: none;
+        background: transparent;
+        position: absolute;
+        right: 0;
+        z-index: 9;
+        padding: 10px 7px;
+        height: 100%;
+    }
+    .search-box i {
+        color: #a0a5b1;
+        font-size: 19px;
+    }
+
+    .navbar .nav-item i {
+        font-size: 18px;
+    }
+    .navbar .nav-item span {
+        position: relative;
+        top: 3px;
+    }
+    .navbar .nav > li a {
+        color: #efe5ff;
+        padding: 8px 15px;
+        font-size: 14px;        
+    }
+    .navbar .nav > li a:hover, .navbar .nav > li a:focus {
+        color: #fff;
+        text-shadow: 0 0 4px rgba(255,255,255,0.3);
+    }
+    .navbar .nav > li > a > i {
+        display: block;
+        text-align: center;
+    }
+    .navbar .dropdown-item i {
+        font-size: 16px;
+        min-width: 22px;
+    }
+    .navbar .dropdown-item .material-icons {
+        font-size: 21px;
+        line-height: 16px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+    .navbar .nav-item.open > a, .navbar .nav-item.open > a:hover, .navbar .nav-item.open > a:focus {
+        color: #fff;
+        background: none !important;
+    }
+    .navbar .dropdown-menu {
+        border-radius: 1px;
+        border-color: #e5e5e5;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+    .navbar .dropdown-menu li a {
+        color: #777 !important;
+        padding: 8px 20px;
+        line-height: normal;
+    }
+    .navbar .dropdown-menu li a:hover, .navbar .dropdown-menu li a:focus {
+        color: #333 !important;
+        background: transparent !important;
+    }
+    .navbar .nav .active a, .navbar .nav .active a:hover, .navbar .nav .active a:focus {
+        color: #fff;
+        text-shadow: 0 0 4px rgba(255,255,255,0.2);
+        background: transparent !important;
+    }
+    .navbar .nav .user-action {
+        padding: 9px 15px;
+    }
+    .navbar .navbar-toggle {
+        border-color: #fff;
+    }
+    .navbar .navbar-toggle .icon-bar {
+        background: #fff;
+    }
+    .navbar .navbar-toggle:focus, .navbar .navbar-toggle:hover {
+        background: transparent;
+    }
+    .navbar .navbar-nav .open .dropdown-menu {
+        background: #faf7fd;
+        border-radius: 1px;
+        border-color: #faf7fd;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+    .navbar .divider {
+        background-color: #e9ecef !important;
+    }
+    @media (min-width: 1200px){
+        .form-inline .input-group {
+            width: 350px;
+            margin-left: 30px;
+        }
+    }
+    @media (max-width: 1199px){
+        .navbar .nav > li > a > i {
+            display: inline-block;          
+            text-align: left;
+            min-width: 30px;
+            position: relative;
+            top: 4px;
+        }
+        .navbar .navbar-collapse {
+            border: none;
+            box-shadow: none;
+            padding: 0;
+        }
+        .navbar .navbar-form {
+            border: none;           
+            display: block;
+            margin: 10px 0;
+            padding: 0;
+        }
+        .navbar .navbar-nav {
+            margin: 8px 0;
+        }
+        .navbar .navbar-toggle {
+            margin-right: 0;
+        }
+        .input-group {
+            width: 100%;
+        }
+    }
+
+
+
+</style>
+{% endblock %}
+
+</html>

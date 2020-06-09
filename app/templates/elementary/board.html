@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field %}
+{% from "_sub_nav.html" import sub_nav %}
+
+{% block app_content %}
+<div class="container" style="width: 90%;">
+    <div class="panel panel-primary">
+        <div class="panel-heading" >
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-th-list"></span>
+                &nbsp;&nbsp; {{ title }}    
+            </h3>
+        </div>
+        <div class="panel-body" style="padding-top: 1;">
+            <table>
+                <tbody>
+                    {% for source in posts %}
+                        {% include 'elementary/_article.html' %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if g.search_form %}
+            <form class="navbar-form navbar-left" method="get" action="{{ url_for('main.search', search_board='board') }}">
+                <div class="form-group">
+                    {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                </div>
+            </form>
+            {% endif %}
+            <div style="float:right">            
+                    {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+        <div class="pannel-footer">
+            <blockquote style="margin-left: 15px;">
+                <p> The pure mathematician, like the musician, is a free creator of his rowld of ordered beauty.</p>
+            </blockquote>                       
+        </div>
+    </div>
+</div>
+<hr>
+{% endblock %}

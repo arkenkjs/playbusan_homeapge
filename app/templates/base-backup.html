@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% from "_sub_nav.html" import sub_nav, sub_nav_board, sub_nav_dropdown %}
+
+{% block head %}
+    {{super()}}
+    {{fixes.ie8()}}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+{% block title %}
+    {% if title %}
+    {{ title }} - Mathomocha-test page
+    {% else %}
+    {{ 'Welcome to MathMocha' }}
+    {% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-toggleable bg-faded navbar-light fixed-top fixed-top-2">
+        <nav class="navbar navbar-default navbar-top navbar-main">
+        <div class="container">
+            <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapse" data-toggle="collapse" 
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+            </div>
+            
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">MathMocha</a>
+
+            <div class="navbar-collapse collapse" id="navbar1">                
+                    <ul class="nav navbar-nav pull-left">
+                        <li><a href="{{ url_for('elementary.index') }}">{{ '초등' }}</a></li>
+                        <li><a href="{{ url_for('main.index') }}">{{ '중등' }}</a></li>
+                        <li><a href="{{ url_for('main.index') }}">{{ '고등' }}</a></li>
+                        <li><a href="{{ url_for('main.index') }}">{{ '선생님' }}</a></li>
+                    </ul>                
+                
+                    <ul class="nav navbar-nav pull-right">
+                        {% if current_user.is_authenticated %}
+                            <li>
+                                <a href="{{ url_for('main.messages') }}"> 쪽지함
+                                    {% set new_messages = current_user.new_messages() %}
+                                    <span id="message_count" class="badge"
+                                        style="visibility: {% if new_messages %}
+                                                                visible
+                                                            {% else %}
+                                                                hidden
+                                                            {% endif %};">
+                                    New!
+                                    </span>
+                                </a>
+                            </li>
+                            <li><a href="{{ url_for('main.user', username=current_user.username) }}">{{ '마이페이지' }}</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('auth.login') }}"> {{'로그인'}}</a>
+                            <li><a href="{{ url_for('auth.position') }}">{{'회원가입'}}</a></li>
+                        {% endif %}
+                        {#<li><a href="#">{{ '가이드'}}</a></li>    #}
+                        <li><a href="{{ url_for('main.faq', category='all') }}">고객센터</a></li>
+                        {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('auth.logout') }}">로그아웃</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </nav>
+   
+
+    {% if level == 'elementary' %}
+   {# <nav class="navbar navbar-toggleable-sm bg-inverse navbar-inverse fixed-top">#}
+    <nav class="navbar navbar-default navbar-down navbar-sub">
+        {# 마지막에 고려.
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        #}
+    <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('elementary.index') }}">초등</a>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div id="menu1" >
+                        <ul class="nav navbar-nav navbar-doublerow navbar-down">
+                            {{ sub_nav_dropdown(endpoint='elementary.list', grade='third', name='3학년') }}
+                            {{ sub_nav_dropdown(endpoint='elementary.list', grade='fourth', name='4학년') }}
+                            {{ sub_nav_dropdown(endpoint='elementary.list', grade='fifth', name='5학년') }}
+                            {{ sub_nav_dropdown(endpoint='elementary.list', grade='sixth', name='6학년') }}
+                            {{ sub_nav_board(endpoint='elementary.community')}}
+                        </ul>
+                    </div>
+                    <div id="menu2" >
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if current_user.is_authenticated %}                                
+                                <li><a href="{{ url_for('auth.logout') }}">{{ '로그아웃' }}</a></li>
+                            {% else %}
+                                {% if form %}
+                                <div id="menu3">
+                                <form action=" {{ url_for('auth.login', next=url_for('elementary.index')) }} " method="POST" class="form-inline" role="loginform">                            
+                                    <input type="text" name="username" class="form-control" size=10 id="username" placeholder="아이디">                            
+                                    <input type="text" name="password" class="form-control" size=10 id="password" placeholder="비밀번호">
+                                    <label>
+                                        <input type="checkbox" id="remember_me"> 아이디 기억하기
+                                    </label>
+                                    <button type="submit" class="btn btn-default">로그인</button>
+                                </form>
+                                </div>
+                                {% endif %}
+                                <div id="menu4" style="float:right">
+                                <li><a href="{{ url_for('auth.position') }}">회원가입</a>
+                                <a href="{{ url_for('auth.reset_password_request') }}">비밀번호초기화</a></li>
+                                </div>
+                            {% endif %}                        
+                        </ul>                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>    
+    {% endif %}
+    </nav>
+{% endblock %}
+
+
+
+
+{% block content %}    
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if current_user.is_authenticated %}
+    {#  {% with tasks = current_user.get_tasks_in_progress() %}
+        {% if tasks %}
+            {% for task in tasks %}
+            <div class="alert alert-success" role="alert">
+                {{ task.description }}
+                <span id="{{ task.id }}-progress">{{ task.get_progress() }}</span>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% endif %}#}        
+        {% endif %}
+
+        
+
+        {% block app_content %}{% endblock %}
+    </div>
+
+{% block footer %}
+<footer>
+    <div class="row">
+        <div class="col-md-2" style="text-align: center;">
+            <img src="{{ url_for('static', filename='img/pi-254088_960_720.png')}}" id="logoTest" style="width:70px; height: 70px;">
+        </div>
+        <div class="col-md-10" style="text-align:left;">
+            <h5> Copyright©2019 MathMocha Company</h5>
+        </div>
+        
+    </div>
+</footer>
+{% endblock %}
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.include_jquery() }}
+    {{ moment.locale('ko')}}
+    {{ moment.lang(g.locale) }}
+    <script src="{{url_for('static', filename='js/html5shiv.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/respond.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doublenav.css') }}">
+    <script>
+        function translate(sourceElem, destElem, sourceLang, destLang) {
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+            $.post('/translate', {
+                text: $(sourceElem).text(),
+                source_language: sourceLang,
+                dest_language: destLang
+            }).done(function(response) {
+                $(destElem).text(response['text'])
+            }).fail(function() {
+                $(destElem).text("{{ 'Error: Could not contact server.' }}");
+            });
+        }
+        $(function () {
+            var timer = null;
+            var xhr = null;
+            $('.user_popup').hover(
+                function(event) {
+                    // mouse in event handler
+                    var elem = $(event.currentTarget);
+                    timer = setTimeout(function() {
+                        timer = null;
+                        xhr = $.ajax(
+                            '/user/' + elem.first().text().trim() + '/popup').done(
+                                function(data) {
+                                    xhr = null;
+                                    elem.popover({
+                                        trigger: 'manual',
+                                        html: true,
+                                        animation: false,
+                                        container: elem,
+                                        content: data
+                                    }).popover('show');
+                                    flask_moment_render_all();
+                                }
+                            );
+                    }, 1000);
+                },
+                function(event) {
+                    // mouse out event handler
+                    var elem = $(event.currentTarget);
+                    if (timer) {
+                        clearTimeout(timer);
+                        timer = null;
+                    }
+                    else if (xhr) {
+                        xhr.abort();
+                        xhr = null;
+                    }
+                    else {
+                        elem.popover('destroy');
+                    }
+                }
+            );
+        });
+        function set_message_count(n) {
+            $('#message_count').text(n);
+            $('#message_count').css('visibility', n ? 'visible' : 'hidden');
+        }
+        function set_task_progress(task_id, progress) {
+            $('#' + task_id + '-progress').text(progress);
+        } 
+        {# Notification 기능 당장 log 분석에 방해되니 나중에 active 시키자.
+        {% if current_user.is_authenticated %}
+        $(function() {
+            var since = 0;
+            setInterval(function() {
+                $.ajax('{{ url_for('main.notifications') }}?since=' + since).done(
+                    function(notifications) {
+                        for (var i = 0; i < notifications.length; i++) {
+                            switch (notifications[i].name) {
+                                case 'unread_message_count':
+                                    set_message_count(notifications[i].data);
+                                    break;
+                                case 'task_progress':
+                                    set_task_progress(notifications[i].data.task_id,
+                                        notifications[i].data.progress);
+                                    break;
+                            }
+                            since = notifications[i].timestamp;
+                        }
+                    }
+                );
+            }, 10000);
+        });
+        {% endif %} #}
+    </script>
+{% endblock %}
+
+</html>

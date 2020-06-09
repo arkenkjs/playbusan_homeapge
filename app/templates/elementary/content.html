@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% from "_formhelpers.html" import render_field, render_submit_field %}
+
+{# {% block script %}
+<script type="text/javascript" src="\static\js\PDFObject-master\pdfobject.js"></script>
+<script type='text/javascript'>
+var myPDF = new PDFObject({ 
+     url: "/static/uploads/{{ post.filename }}", 
+     pdfOpenParams: { 
+          view: 'Fit', 
+          scrollbars: '0', 
+          toolbar: '0', 
+          statusbar: '0', 
+          navpanes: '0' }
+      }).embed('#pdf'); 
+</script>
+{% endblock %} #}
+
+{% block  app_content %}
+<div class="container" style="width: 80%;">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-paperclip"></span>
+                &nbsp;&nbsp;             
+                <table width="100%">
+                    <tr>
+                        <th width="50px">제목 : </th>
+                        <td width="300px" colspan="3">{{ post.title }}</td>
+                        <th width="50px">저자: </th>
+                        <td width="100px">{{ post.author.username }}</td>
+                        <th width="70px">작성시간</th>
+                        <td width="150px">{{ post.timestamp }}</td>
+                    </tr>
+                </table>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table width="100%">
+                <tr height="50px">
+                    <td colspan="3">
+                        <span class="pull-left">
+                            <form>
+                                <span class="form-inline">  
+                                    <button type="button" class="btn btn-outline-secondary" formaction="url_for('elementary.content', postid=post.id, type=type, school='초등학교')" method="POST">수정</button>
+                                    <button type="button" class="btn btn-outline-secondary" formaction="url_for('elementary.deletecontent', type=type, postid=postid, level='elementary')" method="POST">삭제</button>
+                                </span>
+                            </form>
+                        </span>
+                        <span class="pull-right">
+                        {% if current_user.has_liked_source(post, type=type) %}
+                            <a href="{{ url_for('elementary.sourcelike', post_id=post.id, action='unlike', type=type) }}">
+                            <i class="fas fa-heart" style="font-size: 2em"></i> {{post.like_counter()}}</a>
+                        {% else %}
+                            <a href="{{ url_for('elementary.sourcelike', post_id=post.id, action='like', type=type) }}">
+                            <i class="far fa-heart" style="font-size: 2em"></i> {{post.like_counter()}}</a>
+                        {% endif %}                        
+                        <i class="fas fa-comments" style="font-size: 2em"></i> {{ comments|list|count }}
+                        <i class="fas fa-eye" style="font-size: 2em"></i> {{post.view_counter()}}
+                    </span>
+                    </td>
+                </tr>
+                <tr width="50%" style="word-break: break-all;">
+                    <td colspan="3" width="80%" style="text-align: left;">
+                        <pre style="display:block; word-wrap: break-word; white-space: pre-line; margin: 1em 0;">
+                            {{ post.body }}
+                        </pre>
+                    </td>
+                </tr>
+                <tr height="20px">
+                </tr>
+                {% if post.filename %}
+                <tr>                    
+                    <td colspan="3">
+                        {# <div class="thumbnail-wrapper">
+                            <div class="thumbnail"> #}
+{#                                 <div id="pdf">pdf Test</div>
+ #}                           {#      <embed src="\static\uploads\{{ post.filename }}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" width="150" height="200" type="application/pdf"> #}
+<iframe src="\static\uploads\{{ post.filename }}#page=1&toolbar=0&navpanes=0&statusbar=0" width="150" height="200" scrolling='no'></iframe>
+                                {# <img src="\static\uploads\{{ post.filename }}" alt="User Image" width='400' height='250'> #}
+                            {# </div>
+                        </div> #}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a href="{{ url_for('elementary.download', filename=post.filename) }}">다운로드</a>
+                    </td>
+                </tr>
+                <tr height="20px">
+                </tr>
+                {% endif %}
+                <tr height="10px">
+                    <td colspan='1' width="10%" style="text-align: left;">
+                           <button type="button" class="btn btn-default btn-sm">
+                                <a href="{{url_for('elementary.content', postid=next_post.id, type=type) or '#'}}">
+                                    <span class="glyphicon glyphicon-circle-arrow-right"></span> 다음
+                                </a>
+                            </button>
+                    </td>
+                    <td colspan="2" width="90%" style="text-align: left;">
+                        <li class="next{% if not next_post %} disabled{% endif %}">
+                            <a href="{{url_for('elementary.content', postid=next_post.id, type=type) or '#'}}">{{ next_post.title}}</a>
+                        </li>
+                    </td>        
+                </tr>
+
+                <tr height="10px">
+                </tr>                
+                <tr>
+                    <th width="10%" style="text-align: left;">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <a href="{{url_for('elementary.content', postid=prev_post.id, type=type) or '#'}}">
+                                <span class="glyphicon glyphicon-circle-arrow-left"></span> 이전
+                            </a>
+                        </button>
+                    </th>
+                    <td colspan="2" width="70%" style="text-align: left;">
+                        <li class="previous{% if not prev_post %} disabled{% endif %}">
+                            <a href="{{url_for('elementary.content', postid=prev_post.id, type=type) or '#'}}"> {{ prev_post.title}}</a>
+                        </li>                            
+                    </td>
+                </tr>
+                <tr height="20px">
+                </tr>
+            </table>            
+            <hr>
+            <div class="pannel-footer">
+                <div class="pull-right">
+                {% if post.school %}                
+                    <a href="{{ url_for('elementary.community', type=type)}}" class="btn btn-small">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-list"></span> 목록
+                        </button>
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('elementary.list', type=type, grade=grade)}}" class="btn btn-small">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-list"></span> 목록
+                        </button>
+                    </a>                
+                {% endif %}
+                </div>
+                {% if form %}
+                    <form action="" method="POST">
+                        {{ form.hidden_tag() }}
+                        <dl>                        
+                            <dd>{{ form.body(cols="80%", rows="5%") }}</dd>
+                            <dd>{{ form.submit(class_="btn btn-default")}}</dd>
+                        </dl>
+                    </form>
+                {% endif %}
+                {% for post in comments %}
+                        {% include 'elementary/_comment.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style%}
+<style type="text/css">
+.thumbnail-wrappper { 
+    width: 25%; 
+}
+
+.thumbnail { 
+    position: relative; 
+    padding-top: 100%; 
+    /* 1:1 ratio */ 
+    overflow: hidden; 
+}
+
+img { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    max-width: 100%; 
+    height: auto;
+}
+
+</style>
+{% endblock %}
+
+{#
+<div class="container">
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>Title</th>
+                <td colspan="3">{{ post.title }}</td>
+            </tr>
+            <tr>
+                <th>author</th>
+                <td>{{ post.author.username }}</td>
+                <th>Time</th>
+                <td>{{ post.timestamp }}</td>
+            </tr>
+            <tr>
+                <td colspan='2' class='text-left'>
+                    <form>
+                        <span class="form-inline">  
+                            <button type="button" class="btn btn-outline-secondary" formaction="url_for('elementary.content', postid=post.id, type=type, school='초등학교')" method="POST">수정</button>
+                            <button type="button" class="btn btn-outline-secondary" formaction="url_for('elementary.deletecontent', type=type, postid=postid, level='elementary')" method="POST">삭제</button>
+                        <!-- <span class="form-inline">
+                            {% if button_edit %}
+                                {{ wtf.quick_form(button_edit) }}
+                            {% endif %}            
+                            {% if button_delete %}                            
+                                {{ wtf.quick_form(button_delete) }}
+                            {% endif %}
+                        </span> -->
+                        </span>
+                    </form>
+                </td>
+                <td colspan="4" class="text-right">
+                    {% if current_user.has_liked_source(post, type=type) %}
+                        <a href="{{ url_for('elementary.sourcelike', post_id=post.id, action='unlike', type=type) }}">싫어요</a>
+                    {% else %}
+                        <a href="{{ url_for('elementary.sourcelike', post_id=post.id, action='like', type=type) }}">좋아요</a>
+                    {% endif %}
+                    <span>댓글수 : {{ comments|list|count }}</span>
+                    <span>좋아요 : {{post.like_counter()}} </span>
+                    <!--<span id="vote_article"></span>
+                    <span>scrap : </span><span id="scrap">0</span>-->
+                    <span>view : {{post.view_counter()}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="word-break: break-all;">
+                    {{ post.body }}
+                    <div style="clear:both"></div>
+                </td>
+            </tr>
+            <tr>
+                {% if post.filename %}
+                <td colspan="4">
+        			<img src="\static\uploads\{{ post.filename }}" alt="User Image" width='400' height='250'>
+                    <a href="{{ url_for('elementary.download', filename=post.filename) }}">다운로드</a>
+        		</td>
+                {% endif %}
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th><i class="icon-arrow-right"></i>&nbsp;다음글</th>
+                <td colspan="3">
+                    <li class="next{% if not next_post %} disabled{% endif %}">
+                        <a href="{{url_for('elementary.content', postid=next_post.id, type=type) or '#'}}">{{ next_post.title}}
+                    </li>           
+                    </a>
+                </td>        
+            </tr>        
+            <tr>
+                <th><i class="icon-arrow-left"></i>&nbsp;이전글</th>
+                <td colspan="3">
+                    <li class="previous{% if not prev_post %} disabled{% endif %}">
+                        <a href="{{url_for('elementary.content', postid=prev_post.id, type=type) or '#'}}"> {{ prev_post.title}}
+                    </li>
+                    </a>
+                </td>
+            </tr>        
+            <tr>
+                <td colspan="4">
+                    <div class="pull-right">
+                        {% if post.school %}
+                        <a href="{{ url_for('elementary.community', type=type)}}" class="btn btn-small">목록</a>
+                        {% else %}
+                        <a href="{{ url_for('elementary.list', type=type, grade=grade)}}" class="btn btn-small">목록</a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+</body>
+
+<div class="container">
+{% if form %}
+    {{ wtf.quick_form(form) }}
+    <br>
+{% endif %}
+
+{% for post in comments %}
+        {% include '_comment.html' %}
+{% endfor %}
+
+{% endblock %}
+</div>#}

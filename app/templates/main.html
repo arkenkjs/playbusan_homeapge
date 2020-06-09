@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf%}
+
+{% block app_content %}
+<div class="container">
+    {% if current_user.is_authenticated %}
+	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+	  <!-- Indicators -->
+	  <ol class="carousel-indicators">
+	    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+	    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+	    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+   	    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+
+	  </ol>
+
+	  <!-- Wrapper for slides -->
+	  <div class="carousel-inner" role="listbox" style="width:100%; height: 500px !important;">
+	    <div class="item active">
+	      <img src="{{ url_for('static', filename='img/geometry-1044090_960_720.jpg') }}" style="width: 100%;" alt="첫번째 이미지">
+	      <div class="carousel-caption">
+	        초등학생을 위한 이벤트
+	      </div>
+	    </div>
+	    <div class="item">
+	      <img src="{{ url_for('static', filename='img/jumbotronBackgroud.jpg') }}" style="width: 100%;" alt="두번째 이미지">
+	      <div class="carousel-caption">
+	        중학생을 위한 이벤트
+	      </div>
+	    </div>
+	    <div class="item">
+	      <img src="{{ url_for('static', filename='img/math-1500720_960_720.jpg') }}" style="width: 100%;" alt="세번째 이미지">
+	      <div class="carousel-caption">
+	        고등학생을 위한 이벤트
+	      </div>
+	    </div>
+	    <div class="item">
+	      <img src="{{ url_for('static', filename='img/school-4571739_960_720.jpg') }}" style="width: 100%;" alt="네번째 이미지">
+	      <div class="carousel-caption">
+	        지금 문제를 푸세요! 선생님을 위한 이벤트
+	      </div>
+	    </div>
+	  </div>
+	  <hr>
+	  <!-- Controls -->
+	  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+	    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	    <span class="sr-only">Previous</span>
+	  </a>
+	  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+	    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	    <span class="sr-only">Next</span>
+	  </a>
+	</div>
+    {% else %}
+	{# 로그인 전과 후의 메인 화면 차별화가 필요할 듯.#}
+	<div class="jumbotron">
+		<h1 class="text-center">MathMocha!</h1>
+		<p class="text-center">수포자들부터 수학고수까지 모두 모여라!</p>		
+		<p class="text-center">지금가입하면 3000포인트 지급!</p>
+			<p class="text-center">
+				<a class="btn btn-primary btn-lg" href="{{ url_for('auth.position')}}" role="button"> 
+				회원 가입 
+				</a>				
+				<a class="btn btn-primary btn-lg" href="{{ url_for('auth.login')}}" role="button"> 
+				로그인
+				</a>  			
+			</p>
+		</p>
+	</div>	
+	{% endif %}
+</div>
+<hr>
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<h4>초등학교</h4>
+			<p>기초를 탄탄히!!</p>
+			<p><a class="btn btn-default" href="{{ url_for('elementary.index') }}" class="nav-link"><i class="fa fa-child"></i>바로가기</a></p>
+		</div>
+		<div class="col-md-3">
+			<h4>중학교</h4>
+			<p>어렵지만은 않다!!</p>
+			<p><a class="btn btn-default" href="{{ url_for('auth.login')}}" class="nav-link"><i class="fa fa-child"></i>바로가기</a></p>
+		</div>
+		<div class="col-md-3">
+			<h4>고등학교</h4>
+			<p>수능부터 내신까지!!</p>
+			<p><a class="btn btn-default" href="{{ url_for('elementary.index') }}" class="nav-link"><i class="fa fa-child"></i>바로가기</a></p>
+		</div>
+		<div class="col-md-3">
+			<h4>선생님</h4>
+			<p>문제풀이로 다양한 혜택을!</p>
+			<p><a class="btn btn-default" href="{{ url_for('elementary.index') }}" class="nav-link"><i class="fa fa-child"></i>바로가기</a></p>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<span class="glyphicon glyphicon-pencil"></span>
+				&nbsp;&nbsp; 공지사항
+			</h3>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="120">날짜</th>
+						<th width="700">제목</th>
+					</tr>
+				</thead>
+					<!-- 공지사항 예제들-->
+				<tbody>					
+					{% for source in sources %}
+					<tr>
+						<th> {{ moment(source.timestamp).format('LL') }} </th>						
+						<th> <a data-toggle="modal" data-target="#modal{{source.id}}">{{ source.title }} </a></th>
+					</tr>
+					{# 아래 div 박스 안에는 위 modal 문법#}
+					<div class="modal" id="modal{{source.id}}" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									 {{ source.title }} 
+									 <hr> {{ moment(source.timestamp).format('LL') }}
+									<button class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body" style="text-align:center;">
+									<pre style="display:block; word-wrap: break-word; white-space: pre-line; margin: 0em 0;">
+										{{ source.body }}
+									</pre>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="pannel-footer">
+				<blockquote>
+				<p> Every kind of science, if it has only reached a certain degree of maturity, automatically becomes a part of mathematics.</p>			
+				</blockquote>						
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+
+{% endblock %}
+
+
+
+
